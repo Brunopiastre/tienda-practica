@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Productos y precios. Pedí directo por WhatsApp.">
+<meta property="og:title" content="Nombre de tu negocio"><meta property="og:description" content="Productos y precios. Pedí directo por WhatsApp."><meta property="og:type" content="website">
+<title>Nombre de tu negocio</title>
+</head><body>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Tienda para clientes: blanca, con detalles en azul marino. Los productos y precios se leen de una planilla de Google (ver CONFIG al final del archivo). */
+:root{
+  color-scheme:light; --bg:#FFFFFF; --ink:#0E2040; --ink-2:#5A6A85; --accent:#0E2A52; --on-accent:#FFFFFF; --tint:#EDF1F8; --line:#C5D0E2;
+  --display:'Figtree','Helvetica Neue',Arial,sans-serif; --head:'Instrument Serif',Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--display);font-size:17px;line-height:1.5}
+.wrap{width:100%;max-width:1080px;margin-inline:auto;padding-inline:20px}
+h1,h2,h3,p{margin:0}
+h1,h2{font-family:var(--head);font-weight:400;text-wrap:balance;letter-spacing:-.01em;line-height:1.02}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.bar .wrap{display:flex;align-items:center;gap:16px;padding-block:18px}
+.logo{width:52px;height:52px;border:1.5px dotted var(--line);border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink-2);text-align:center;line-height:1.1;flex:none;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:cover}
+.brand{font-family:var(--head);font-size:30px;min-width:0}
+.nav{margin-left:auto;display:flex;gap:22px;font-weight:600;color:var(--ink-2)}
+.nav a{color:inherit;text-decoration:none;border-bottom:1.5px dotted var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:800;font-size:17px;padding:13px 24px;border-radius:999px;text-decoration:none;border:0;cursor:pointer}
+.btn.sm{padding:10px 18px;font-size:15px}
+.btn.ghost{background:transparent;border:1.5px dotted var(--accent);color:var(--ink)}
+.btn[aria-disabled="true"]{background:var(--tint);color:var(--ink-2);pointer-events:none}
+.frame{display:grid;place-items:center;gap:6px;border:1.5px dotted var(--line);border-radius:18px;background:var(--bg);color:var(--ink-2);font-weight:600;text-align:center;padding:16px;overflow:hidden}
+.frame.pic{padding:0}
+.frame img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-block:28px 36px}
+.hero h1{font-size:clamp(42px,6.4vw,68px)}
+.hero p{margin-top:16px;font-family:var(--head);font-style:italic;font-size:27px;line-height:1.25;color:var(--ink-2);max-width:30ch}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero .frame{aspect-ratio:5/4}
+.sec{padding-block:36px;border-top:1.5px dotted var(--line)}
+.sec h2{font-size:clamp(34px,4.8vw,48px)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.chip{font:inherit;border:1.5px dotted var(--line);border-radius:999px;padding:5px 14px;font-weight:600;font-size:15px;background:var(--bg);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px}
+.prod{display:flex;flex-direction:column;gap:10px;border:1.5px dotted var(--line);border-radius:20px;padding:12px;min-width:0}
+.prod .frame{aspect-ratio:4/3}
+.prod h3{font-size:19px;font-weight:700;overflow-wrap:anywhere}
+.prod p{font-size:15px;color:var(--ink-2);overflow-wrap:anywhere}
+.prod .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;flex-wrap:wrap}
+.price{font-family:var(--head);font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.tag{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--tint);padding:4px 10px;border-radius:999px;align-self:flex-start}
+.msg{margin-top:22px;color:var(--ink-2)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:22px}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step b{flex:none;width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-size:20px}
+.step h3{font-size:20px}
+.step p{color:var(--ink-2);font-size:15px}
+.contact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:22px}
+.contact div{border-top:1.5px dotted var(--line);padding-top:12px;overflow-wrap:anywhere}
+.contact small{display:block;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--ink-2);font-size:12px;margin-bottom:4px}
+footer{padding-block:30px;border-top:1.5px dotted var(--line);color:var(--ink-2);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+@media (max-width:820px){
+  .hero .wrap{grid-template-columns:1fr;gap:28px;padding-block:24px 32px}
+  .grid,.steps,.contact{grid-template-columns:1fr}
+  .nav{display:none}
+  .bar .btn{margin-left:auto}
+  .sec{padding-block:28px}
+}
+@media (min-width:821px) and (max-width:960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<header class="bar"><div class="wrap">
+  <div class="logo" id="logo" aria-hidden="true">TU<br>LOGO</div>
+  <div class="brand" id="brand">Nombre de tu negocio</div>
+  <nav class="nav" aria-label="Secciones"><a href="#productos">Productos</a><a href="#pedir">Cómo pedir</a><a href="#contacto">Contacto</a></nav>
+  <a class="btn sm" id="wa1" href="#" target="_blank" rel="noopener">WhatsApp</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <h1 id="frase"></h1>
+    <p id="subfrase"></p>
+    <div class="cta"><a class="btn" id="wa2" href="#" target="_blank" rel="noopener">Pedir por WhatsApp</a><a class="btn ghost" href="#productos">Ver productos</a></div>
+  </div>
+  <div class="frame" id="hero-foto">Tu foto principal</div>
+</div></section>
+
+<section class="sec" id="productos"><div class="wrap">
+  <h2>Productos</h2>
+  <div class="chips" id="chips" hidden></div>
+  <div class="grid" id="grid"></div>
+  <p class="msg" id="msg" hidden></p>
+</div></section>
+
+<section class="sec" id="pedir"><div class="wrap">
+  <h2>Cómo pedir</h2>
+  <div class="steps">
+    <div class="step"><b>1</b><div><h3>Elegís</h3><p>Mirás los productos y precios a cualquier hora.</p></div></div>
+    <div class="step"><b>2</b><div><h3>Escribís</h3><p>Tocás el botón y te llega el pedido por WhatsApp.</p></div></div>
+    <div class="step"><b>3</b><div><h3>Lo recibís</h3><p>Coordinan pago y entrega o retiro.</p></div></div>
+  </div>
+</div></section>
+
+<section class="sec" id="contacto"><div class="wrap">
+  <h2>Dónde encontrarnos</h2>
+  <div class="contact">
+    <div><small>Dirección</small><span id="c-dir"></span></div>
+    <div><small>Horarios</small><span id="c-hor"></span></div>
+    <div><small>WhatsApp</small><span id="c-tel"></span></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span><span id="f-nombre"></span> · Todos los derechos reservados</span>
+  <span>Página hecha por Bruno Piastrellini · brunopiastrellini@gmail.com</span>
+</div></footer>
+
+<script>
+/* ===== CONFIGURACIÓN: lo único que se cambia para cada cliente ===== */
+var CONFIG={
+  nombre:'Nombre de tu negocio',
+  frase:'Acá va la frase que presenta tu negocio.',
+  subfrase:'Una línea corta que cuente qué vendés y para quién.',
+  whatsapp:'5492612195320',          /* con código de país, sin + ni espacios */
+  telefono:'261 219-5320',
+  direccion:'Calle y número, ciudad',
+  horarios:'Lunes a sábado, 9 a 18 h',
+  logo:'',                           /* link a la imagen del logo (opcional) */
+  fotoPrincipal:'',                  /* link a la foto de portada (opcional) */
+  planilla:''                        /* link CSV de la planilla publicada en la web */
+};
+/* =================================================================== */
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var C=CONFIG;
+  document.title=C.nombre;
+  $('brand').textContent=C.nombre; $('f-nombre').textContent=C.nombre;
+  $('frase').textContent=C.frase; $('subfrase').textContent=C.subfrase;
+  $('c-dir').textContent=C.direccion; $('c-hor').textContent=C.horarios; $('c-tel').textContent=C.telefono;
+  function wa(txt){return 'https://wa.me/'+C.whatsapp+(txt?'?text='+encodeURIComponent(txt):'')}
+  $('wa1').href=wa('Hola, vi tu página y quiero hacer un pedido.'); $('wa2').href=wa('Hola, vi tu página y quiero hacer un pedido.');
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function img(u,alt){return '<img src="'+esc(fix(u))+'" alt="'+esc(alt||'')+'" loading="lazy" referrerpolicy="no-referrer">'}
+  function fix(u){var m=/drive\.google\.com\/file\/d\/([^\/?#]+)/.exec(u)||/drive\.google\.com\/open\?id=([^&#]+)/.exec(u);return m?'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w1000':u}
+  if(C.logo){$('logo').innerHTML=img(C.logo,'');$('logo').style.border='0'}
+  if(C.fotoPrincipal){$('hero-foto').className='frame pic';$('hero-foto').innerHTML=img(C.fotoPrincipal,C.nombre)}
+
+  /* lectura de la planilla */
+  function parseCSV(t){var rows=[],r=[],f='',q=false,i,c;
+    for(i=0;i<t.length;i++){c=t[i];
+      if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+      else if(c==='"')q=true; else if(c===','){r.push(f);f=''}
+      else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;r.push(f);rows.push(r);r=[];f=''}
+      else f+=c}
+    if(f!==''||r.length){r.push(f);rows.push(r)}return rows}
+  function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim()}
+  function num(s){
+    var t=String(s).replace(/[^\d.,]/g,''); if(!t)return null;
+    var d=t.lastIndexOf('.'),c=t.lastIndexOf(',');
+    if(d>-1&&c>-1){t=d>c?t.replace(/,/g,''):t.replace(/\./g,'').replace(',','.')}
+    else if(c>-1){t=/^\d{1,3}(,\d{3})+$/.test(t)?t.replace(/,/g,''):t.replace(',','.')}
+    else if(d>-1){t=/^\d{1,3}(\.\d{3})+$/.test(t)?t.replace(/\./g,''):t}
+    var n=parseFloat(t);return isNaN(n)?null:n}
+  function toProducts(rows){
+    var h=rows[0].map(norm),ix=function(){for(var a=0;a<arguments.length;a++){var k=h.indexOf(arguments[a]);if(k>-1)return k}return -1};
+    var iN=ix('producto','nombre'),iD=ix('descripcion'),iP=ix('precio'),iF=ix('foto','imagen'),iC=ix('categoria'),iA=ix('disponible');
+    var out=[];
+    for(var k=1;k<rows.length;k++){var r=rows[k],name=iN>-1?(r[iN]||'').trim():'';if(!name)continue;
+      var av=iA>-1?norm(r[iA]||''):'si';
+      out.push({name:name,desc:iD>-1?(r[iD]||'').trim():'',price:iP>-1?(r[iP]||'').trim():'',photo:iF>-1?(r[iF]||'').trim():'',cat:iC>-1?(r[iC]||'').trim():'',ok:!(av==='no'||av==='agotado')})}
+    return out}
+  var fmt=new Intl.NumberFormat('es-AR',{maximumFractionDigits:2});
+  function priceText(p,demo){if(demo)return '$0.000';var n=num(p);return n===null?(p||'Consultar'):'$'+fmt.format(n)}
+
+  var DEMO=[1,2,3,4,5,6].map(function(i){return {name:'Nombre del producto '+i,desc:'Una descripción corta: tamaño, sabor, material o lo que quieras destacar.',price:'',photo:'',cat:'',ok:true,demo:true}});
+  var all=[],cat='';
+  function render(){
+    var list=all.filter(function(p){return !cat||p.cat===cat});
+    $('grid').innerHTML=list.map(function(p){
+      var ph=p.photo?img(p.photo,p.name):'Foto del producto';
+      var btn=p.ok?'<a class="btn sm" href="'+esc(wa('Hola, quiero pedir: '+p.name))+'" target="_blank" rel="noopener">Pedir</a>':'<span class="btn sm" aria-disabled="true">Agotado</span>';
+      return '<article class="prod"><div class="frame'+(p.photo?' pic':'')+'">'+ph+'</div><h3>'+esc(p.name)+'</h3>'+(p.desc?'<p>'+esc(p.desc)+'</p>':'')+'<div class="row"><span class="price">'+esc(priceText(p.price,p.demo))+'</span>'+btn+'</div></article>'}).join('');
+  }
+  function chips(){
+    var cs=[];all.forEach(function(p){if(p.cat&&cs.indexOf(p.cat)<0)cs.push(p.cat)});
+    var el=$('chips');if(cs.length<2){el.hidden=true;return}
+    el.hidden=false;el.innerHTML=['Todo'].concat(cs).map(function(c,i){return '<button type="button" class="chip" data-c="'+(i?esc(c):'')+'" aria-pressed="'+(i?'false':'true')+'">'+esc(c)+'</button>'}).join('');
+    el.querySelectorAll('.chip').forEach(function(b){b.addEventListener('click',function(){cat=b.dataset.c;el.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});render()})})}
+  function show(list){all=list;chips();render();$('msg').hidden=!!list.length;if(!list.length){$('msg').textContent='Todavía no hay productos cargados.';}}
+  function fail(){
+    var cached=null;try{cached=JSON.parse(localStorage.getItem('productos-cache')||'null')}catch(e){}
+    if(cached&&cached.length){show(cached)}else{show([]);$('msg').hidden=false;$('msg').textContent='No pudimos cargar los productos ahora. Escribinos por WhatsApp y te los mostramos.'}}
+  if(!C.planilla){show(DEMO)}
+  else{
+    $('msg').hidden=false;$('msg').textContent='Cargando productos…';
+    fetch(C.planilla,{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){
+      var list=toProducts(parseCSV(t));
+      try{localStorage.setItem('productos-cache',JSON.stringify(list))}catch(e){}
+      show(list)}).catch(fail)}
+})();
+</script>
+
+</body></html>
